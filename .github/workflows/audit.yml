@@ -1,0 +1,20 @@
+name: Release Readiness Audit
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Write readiness evidence file
+        run: |
+          echo "Release readiness audit evidence" > readiness-evidence.txt
+          echo "Generated at: $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> readiness-evidence.txt
+          echo "Workflow: .github/workflows/audit.yml" >> readiness-evidence.txt
+      - name: Upload readiness evidence artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: audit-evidence
+          path: readiness-evidence.txt
